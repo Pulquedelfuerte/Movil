@@ -1,0 +1,45 @@
+//LENGUAJE ENSAMBLADOR
+
+; Definimos el número a verificar
+numero equ 12321
+
+; Definimos el registro que almacenará el número
+mov ax, numero
+
+; Definimos el registro que almacenará la reversa del número
+mov bx, 0
+
+; Ciclo para revertir el número
+loop_start:
+    ; Obtenemos el último dígito del número
+    mov cx, ax
+    and cx, 0x0F
+    ; Lo agregamos a la reversa del número
+    mov dx, 10
+    mul bx
+    add bx, cx
+    ; Quitamos el último dígito del número original
+    mov cx, 10
+    div ax, cx
+    ; Verificamos si el número original es cero
+    cmp ax, 0
+    jz loop_end
+    ; Si no es cero, continuamos con el ciclo
+    jmp loop_start
+
+loop_end:
+    ; Verificamos si el número original es igual a su reversa
+    cmp ax, bx
+    je es_capicua
+    ; Si no es igual, no es capicúa
+    mov dx, 'No es capicúa'
+    jmp fin
+
+es_capicua:
+    ; Si es igual, es capicúa
+    mov dx, 'Es capicúa'
+
+fin:
+    ; Imprimimos el resultado
+    mov ah, 09h
+    int 21h
